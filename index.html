@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiraki Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  @font-face{
+    font-family:'Playfair Display';
+    src:url('assets/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+  }
+  @font-face{
+    font-family:'Playfair Display';
+    src:url('assets/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight:100 900;
+    font-style:italic;
+    font-display:swap;
+  }
+  :root{
+    --black: #030303;
+    --navy-top: #1c1457;
+    --navy-bottom: #0a0722;
+    --red: #e2394a;
+    --red-dark: #8f1f2b;
+    --menu-purple: #4a3fa3;
+    --cyan: #52dde3;
+    --white: #f5f5f7;
+    --star: rgba(255,255,255,.85);
+  }
+
+  html, body{ height:100%; }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    background: var(--navy-bottom);
+    font-family: 'Archivo', sans-serif;
+    color: var(--white);
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- BANNER SUPERIOR (futuros proyectos) ---------- */
+  .banner{
+    flex: 0 0 auto;
+    height: min(140px, 15vh);
+    background: var(--black);
+    z-index: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  /* campo de estrellas ambiental — puntos más grandes y opacos, drift más rápido */
+  .banner::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(3px 3px at 8% 30%, rgba(255,255,255,.8) 50%, transparent 52%),
+      radial-gradient(2.5px 2.5px at 22% 70%, rgba(255,255,255,.6) 50%, transparent 52%),
+      radial-gradient(2px 2px at 38% 20%, rgba(82,221,227,.75) 50%, transparent 52%),
+      radial-gradient(3px 3px at 55% 55%, rgba(255,255,255,.65) 50%, transparent 52%),
+      radial-gradient(2px 2px at 70% 25%, rgba(255,255,255,.55) 50%, transparent 52%),
+      radial-gradient(2.5px 2.5px at 86% 65%, rgba(226,57,74,.7) 50%, transparent 52%),
+      radial-gradient(2px 2px at 95% 35%, rgba(255,255,255,.6) 50%, transparent 52%);
+    background-repeat: repeat;
+    background-size: 100% 100%;
+    animation: bannerDrift 18s linear infinite;
+    will-change: background-position;
+  }
+  @keyframes bannerDrift{
+    0%{ background-position: 0 0; }
+    100%{ background-position: -220px 0; }
+  }
+
+  /* ---------- HERO ---------- */
+    .hero{
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: linear-gradient(160deg, var(--navy-top) 0%, var(--navy-bottom) 75%);
+    overflow: visible;
+    }
+
+  /* resplandor ambiental que respira — alpha subidos, z-index por encima del backdrop */
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    background:
+      radial-gradient(45% 55% at 78% 15%, rgba(82,221,227,.35), transparent 70%),
+      radial-gradient(40% 50% at 60% 85%, rgba(226,57,74,.28), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite;
+    will-change: opacity;
+  }
+  @keyframes heroGlow{
+    0%,100%{ opacity:.5; }
+    50%{ opacity:1; }
+  }
+
+  /* rectangulo blanco detras de la foto: da la ilusion de que la foto
+     "continua" ese fondo, como si fuera parte del recorte */
+  .backdrop{
+    position:absolute;
+    left:-0; top:0;
+    width: 22%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 1;
+    overflow: hidden;
+  }
+  /* barrido de luz que cruza el panel — usa transform para rendimiento,
+     colores que contrastan con el blanco, ciclo más largo con más repeticiones */
+  .backdrop::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0;
+    left:0;
+    width: 100%;
+    background: linear-gradient(100deg, transparent 0%, rgba(82,221,227,.3) 35%, rgba(226,57,74,.45) 50%, rgba(82,221,227,.3) 65%, transparent 100%);
+    transform: translateX(-100%);
+    animation: backdropSweep 5s ease-in-out 1s infinite;
+    will-change: transform;
+  }
+  @keyframes backdropSweep{
+    0%{ transform: translateX(-100%); }
+    40%{ transform: translateX(100%); }
+    100%{ transform: translateX(100%); }
+  }
+
+  /* estrellas decorativas */
+  .star{
+    position:absolute;
+    color: var(--star);
+    line-height:1;
+    animation: twinkle 3.2s ease-in-out infinite;
+    user-select:none;
+    pointer-events:none;
+    z-index: 3;
+    will-change: transform, opacity;
+  }
+  .star.s1{ top: 10%;  right: 7%;  font-size: 30px; animation-delay:0s; }
+  .star.s2{ top: 40%;  right: 14%; font-size: 22px; animation-delay:.7s; }
+  .star.s3{ top: 58%;  right: 9%;  font-size: 34px; animation-delay:1.3s; }
+  .star.s4{ bottom: 20%; left: 2.5%; font-size: 18px; color: var(--cyan); animation-delay:1.9s; }
+  @keyframes twinkle{
+    0%,100%{ opacity:.4; transform:scale(.85) rotate(0deg); }
+    50%{ opacity:1; transform:scale(1.15) rotate(10deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .star{ animation:none; opacity:.8; }
+  }
+
+  /* foto: llena el ancho completo del rectangulo blanco (se recorta con
+     object-fit:cover en vez de dejar un hueco vacio a su derecha).
+     Ajusta object-position si el recorte no deja bien centrado tu rostro. */
+    .portrait{
+    position:absolute;
+    left:0px;
+    top:-60px;      /* sobresale hacia el banner */
+    width:42%;
+    height:calc(150% + 60px);
+    object-fit:cover;
+    object-position:center 10%;
+    z-index:10;
+    opacity:0;
+    transform: translateX(-36px);
+    transition: opacity 1s ease .05s, transform 1.05s cubic-bezier(.16,.84,.44,1) .05s;
+    will-change: transform, opacity;
+    }
+  body.loaded .portrait{
+    opacity:1;
+    transform: translateX(0);
+  }
+  body.loaded .portrait.floaty{
+    animation: portraitFloat 4.5s ease-in-out .8s infinite;
+    will-change: transform;
+  }
+
+  @keyframes portraitFloat{
+    0%,100%{ transform: translateX(0) translateY(0); }
+    50%{ transform: translateX(0) translateY(-28px); }
+  }
+
+  /* menu */
+  nav.menu{
+    position:relative;
+    z-index: 4;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap: min(2.2vh, 22px);
+    padding-top: min(7vh, 56px);
+    padding-left: 35%;
+    padding-right: 5%;
+  }
+  nav.menu a{
+    position:relative;
+    display:inline-block;
+    text-decoration:none;
+    color: var(--menu-purple);
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    padding: 8px 6px;
+    white-space:nowrap;
+    opacity:0;
+    transform: translateY(22px) rotate(var(--rot, 0deg));
+    transition: color .25s ease, opacity .6s ease var(--stagger, 0s), transform .6s cubic-bezier(.2,.8,.3,1) var(--stagger, 0s), box-shadow .3s ease;
+  }
+  body.loaded nav.menu a{
+    opacity:1;
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  body.loaded nav.menu a.animate-float{
+    animation: menuFloat 3.2s ease-in-out infinite;
+    will-change: transform;
+  }
+  @keyframes menuFloat{
+    0%,100%{ transform: translateY(0) rotate(var(--rot, 0deg)); }
+    50%{ transform: translateY(-8px) rotate(var(--rot, 0deg)); }
+  }
+  nav.menu a::before{
+    content:"";
+    position:absolute;
+    left:-16px; right:-16px; top:8px; bottom:2px;
+    background: linear-gradient(100deg, var(--red) 0%, var(--red) 85%, var(--red-dark) 100%);
+    clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+    transform: scaleX(0) skewX(-2deg);
+    transform-origin: left center;
+    z-index:-1;
+    opacity:0;
+    transition: transform .28s cubic-bezier(.2,.8,.3,1), opacity .28s ease;
+  }
+  nav.menu a:hover,
+  nav.menu a:focus-visible{
+    color: var(--white);
+    transform: translateX(8px) translateY(-2px) rotate(var(--rot, 0deg)) scale(1.04);
+    animation: none;
+  }
+  nav.menu a:focus-visible{
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  nav.menu a:hover::before,
+  nav.menu a:focus-visible::before{
+    transform: scaleX(1) skewX(-2deg);
+    opacity:1;
+  }
+
+  nav.menu a:nth-child(1){
+    font-size: clamp(2.7rem, min(6.6vw, 7.6vh), 4.4rem);
+    margin-left: 0;
+    --rot: -4deg;
+    --stagger: .12s;
+  }
+  nav.menu a:nth-child(2){
+    font-size: clamp(2rem, min(5vw, 6vh), 3.3rem);
+    margin-left: clamp(15px, 3vw, 30px);
+    --stagger: .26s;
+  }
+  nav.menu a:nth-child(3){
+    font-size: clamp(2rem, min(5vw, 6vh), 3.3rem);
+    margin-left: clamp(30px, 6vw, 60px);
+    --stagger: .40s;
+  }
+  nav.menu a:nth-child(4){
+    font-size: clamp(2rem, min(5vw, 6vh), 3.3rem);
+    margin-left: clamp(45px, 9vw, 90px);
+    --rot: 4deg;
+    --stagger: .54s;
+  }
+
+  /* titulo HIRAKI WORKS: enorme, pegado al fondo */
+  .wordmark{
+    position:absolute;
+    left:0; right:0; bottom: min(-1.4vh, -8px);
+    top:450px;
+    z-index:20;
+    display:flex;
+    align-items:baseline;
+    justify-content:flex-start;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding-left: clamp(4px, 1.6vw, 14px);
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    font-size: clamp(2.6rem, min(13vw, 18vh), 10.5rem);
+    line-height:.9;
+    letter-spacing:-.015em;
+  }
+  .wordmark span{
+    opacity:0;
+    transform: translateY(38px);
+    transition: opacity .7s ease var(--wdelay, 0s), transform .7s cubic-bezier(.16,.84,.44,1) var(--wdelay, 0s);
+  }
+  body.loaded .wordmark span{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .wordmark .letter-h{ color: var(--cyan); --wdelay: .55s; }
+  .wordmark .letter-a{ color: var(--red); --wdelay: .75s; }
+  .wordmark .rest{ color: var(--white); }
+  .wordmark .rest:nth-child(2){ --wdelay: .62s; }  /* "IR" */
+  .wordmark .rest:nth-child(4){ --wdelay: .82s; }  /* "KI" */
+  .wordmark .gap{ width: .3em; flex: 0 0 auto; --wdelay: .9s; }
+  .wordmark .rest.brand{
+    --wdelay: .95s;
+    background: linear-gradient(100deg, var(--white) 0%, var(--cyan) 30%, var(--white) 50%, var(--cyan) 70%, var(--white) 100%);
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  body.loaded .wordmark .rest.brand{
+    animation: brandShimmer 4s ease-in-out .8s infinite;
+    will-change: background-position;
+  }
+  @keyframes brandShimmer{
+    0%{ background-position: 200% 0; }
+    40%,100%{ background-position: -60% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .banner::before,
+    .hero::before,
+    .backdrop::after,
+    .portrait,
+    body.loaded .portrait.floaty,
+    nav.menu a,
+    body.loaded nav.menu a.animate-float,
+    .wordmark span,
+    body.loaded .wordmark .rest.brand{
+      animation: none !important;
+      transition: none !important;
+    }
+    .portrait{ opacity:1; transform:none; }
+    nav.menu a{ opacity:1; transform: rotate(var(--rot, 0deg)); }
+    .wordmark span{ opacity:1; transform:none; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 640px){
+    .backdrop{ width: 55%; }
+    .portrait{ width: 55%; }
+    nav.menu{ padding-left: 10%; }
+    .star.s2, .star.s3{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Banner superior: aqui iran las imagenes/carrusel de proyectos futuros -->
+  <div class="banner"></div>
+
+  <!-- Hero principal -->
+  <header class="hero">
+    <div class="backdrop"></div>
+
+    <span class="star s1" aria-hidden="true">&#10022;</span>
+    <span class="star s2" aria-hidden="true">&#10022;</span>
+    <span class="star s3" aria-hidden="true">&#10022;</span>
+    <span class="star s4" aria-hidden="true">&#10022;</span>
+
+    <img class="portrait floaty" src="assets/me1.png" alt="Retrato">
+
+    <nav class="menu" aria-label="Navegación principal">
+      <a href="#quienes-somos">Quienes somos</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#redes">Redes</a>
+      <a href="#testimonios">Testimonios</a>
+    </nav>
+
+    <div class="wordmark" aria-label="Hiraki Works">
+      <span class="letter-h">H</span><span class="rest">IR</span><span class="letter-a">A</span><span class="rest">KI</span>
+      <span class="gap"></span>
+      <span class="rest brand">WORKS</span>
+    </div>
+  </header>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          document.body.classList.add('loaded');
+          setTimeout(function(){
+            document.querySelectorAll('nav.menu a').forEach(function(a){
+              a.classList.add('animate-float');
+            });
+          }, 900);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
