@@ -834,12 +834,71 @@ html.reduce-motion{ scroll-behavior:auto; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 640px){
-  .backdrop{ width: 55%; }
-  .portrait{ width: 25%; }
-  nav.menu{ padding-left: 10%; }
+  /* Backdrop — hidden on mobile, portrait takes focus */
+  .backdrop{ display:none; }
+
+  /* Portrait — centered at top of hero so it's always visible */
+  .portrait{
+    left: 50%;
+    top: 8vh;
+    width: 38%;
+    max-width: 150px;
+    height: auto;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    transform: translateX(-50%);
+  }
+  body.loaded .portrait{
+    opacity:1;
+    transform: translateX(-50%);
+  }
+  body.loaded .portrait.floaty{
+    animation: portraitFloatMobile 10s ease-in-out 3s infinite;
+  }
+  @keyframes portraitFloatMobile{
+    0%{ transform: translateX(-50%) translateY(0); }
+    50%{ transform: translateX(-50%) translateY(-10px); }
+    100%{ transform: translateX(-50%) translateY(0); }
+  }
+
+  /* Menu — below portrait, stacked without staircase offset */
+  nav.menu{
+    padding-left: 8%;
+    padding-right: 5%;
+    padding-top: calc(8vh + 160px);
+  }
+  nav.menu a{
+    margin-left: 0 !important;
+    padding: 6px 30px 6px 12px;
+  }
+  nav.menu a:nth-child(1){
+    font-size: clamp(2rem, 7.5vw, 2.7rem);
+  }
+  nav.menu a:nth-child(2),
+  nav.menu a:nth-child(3),
+  nav.menu a:nth-child(4){
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+  }
+
+  /* Wordmark — at bottom, reduced size to fit narrow viewports */
+  .wordmark{
+    top: auto;
+    bottom: clamp(16px, 5vh, 40px);
+    font-size: clamp(1.8rem, 10vw, 3rem);
+  }
+
+  /* Decorative elements */
   .star.s2, .star.s3{ display:none; }
+  .bg-word{ display:none; }
+
+  /* Members — compact cards */
   .member-card{ height:76px; }
   .member-photo-wrap{ width:76px; }
   .member-name-bar{ font-size:1.25rem; padding:0 22px 0 16px; }
-  .bg-word{ display:none; }
+
+  /* Reduce-motion: preserve mobile centering */
+  html.reduce-motion .portrait{
+    opacity:1;
+    transform: translateX(-50%);
+  }
 }
