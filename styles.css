@@ -249,7 +249,7 @@ body.loaded .backdrop{
   position:absolute;
   left:-120px;
   top:-40px;
-  width:50%;
+  width:59%;
   height:calc(105% + 40px);
   object-fit:cover;
   object-position:30% 10%;
@@ -341,8 +341,8 @@ nav.menu a:focus-visible::before{
   transform: scaleX(1) skewX(-2deg);
   opacity:1;
 }
-nav.menu a.current{ color: var(--white); }
-nav.menu a.current::before{ transform: scaleX(1) skewX(-2deg); opacity:.45; }
+nav.menu a.current{ color: var(--menu-purple); }
+nav.menu a.current:hover{ color: var(--white); }
 
 nav.menu a:nth-child(1){
   font-size: clamp(2.7rem, min(6.6vw, 7.6vh), 4.4rem);
