@@ -116,23 +116,6 @@
     z-index: 1;
     overflow: hidden;
   }
-  /* barrido de luz que cruza el panel — usa transform para rendimiento,
-     colores que contrastan con el blanco, ciclo más largo con más repeticiones */
-  .backdrop::after{
-    content:"";
-    position:absolute;
-    top:0; bottom:0;
-    left:0;
-    width: 100%;
-    background: linear-gradient(100deg, transparent 0%, rgba(82,221,227,.3) 35%, rgba(226,57,74,.45) 50%, rgba(82,221,227,.3) 65%, transparent 100%);
-    transform: translateX(-100%);
-    animation: backdropSweep 10s ease-in-out 2s infinite;
-  }
-  @keyframes backdropSweep{
-    0%{ transform: translateX(-100%); }
-    40%{ transform: translateX(100%); }
-    100%{ transform: translateX(100%); }
-  }
 
   /* estrellas decorativas */
   .star{
@@ -193,7 +176,7 @@
     align-items:flex-start;
     gap: min(2.2vh, 22px);
     padding-top: min(7vh, 56px);
-    padding-left: 35%;
+    padding-left: 35.5%;
     padding-right: 5%;
   }
   nav.menu a{
@@ -327,23 +310,22 @@
     40%,100%{ background-position: -60% 0; }
   }
 
-  @media (prefers-reduced-motion: reduce){
-    .banner::before,
-    .hero::before,
-    .backdrop::after,
-    .portrait,
-    body.loaded .portrait.floaty,
-    nav.menu a,
-    body.loaded nav.menu a.animate-float,
-    .wordmark span,
-    body.loaded .wordmark .rest.brand{
-      animation: none !important;
-      transition: none !important;
-    }
-    .portrait{ opacity:1; transform:none; }
-    nav.menu a{ opacity:1; translate: 0 0; rotate: var(--rot, 0deg); }
-    .wordmark span{ opacity:1; transform:none; }
+
+  /* ---------- toggle animaciones ---------- */
+  html.reduce-motion .banner::before,
+  html.reduce-motion .hero::before,
+  html.reduce-motion .portrait,
+  html.reduce-motion body.loaded .portrait.floaty,
+  html.reduce-motion nav.menu a,
+  html.reduce-motion body.loaded nav.menu a.animate-float,
+  html.reduce-motion .wordmark span,
+  html.reduce-motion body.loaded .wordmark .rest.brand{
+    animation: none !important;
+    transition: none !important;
   }
+  html.reduce-motion .portrait{ opacity:1; transform:none; }
+  html.reduce-motion nav.menu a{ opacity:1; translate: 0 0; rotate: var(--rot, 0deg); }
+  html.reduce-motion .wordmark span{ opacity:1; transform:none; }
 
   /* ---------- responsive ---------- */
   @media (max-width: 640px){
@@ -384,6 +366,10 @@
     </div>
   </header>
 
+  <button id="toggle-animations" style="position:fixed; top:20px; right:20px; z-index:999; padding:8px 12px; background:#e2394a; color:#fff; border:none; cursor:pointer; border-radius:4px; font-size:12px;">
+    Animaciones: ON
+  </button>
+
   <script>
     window.addEventListener('load', function(){
       requestAnimationFrame(function(){
@@ -395,6 +381,30 @@
         }, 3600);
       });
     });
+
+    var btn = document.getElementById('toggle-animations');
+    var root = document.documentElement;
+    var prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var saved = localStorage.getItem('user-animations-enabled');
+    var animEnabled = saved !== null ? saved === 'true' : !prefersReduced;
+
+    updateAnimations(animEnabled);
+
+    btn.addEventListener('click', function(){
+      animEnabled = !animEnabled;
+      localStorage.setItem('user-animations-enabled', animEnabled);
+      updateAnimations(animEnabled);
+    });
+
+    function updateAnimations(enabled){
+      if(enabled){
+        root.classList.remove('reduce-motion');
+        btn.textContent = 'Animaciones: ON';
+      } else {
+        root.classList.add('reduce-motion');
+        btn.textContent = 'Animaciones: OFF';
+      }
+    }
   </script>
 
 </body>
