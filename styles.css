@@ -371,7 +371,7 @@ nav.menu a:nth-child(4){
 .wordmark{
   position:absolute;
   left:0; right:0; bottom: min(-1.4vh, -8px);
-  top: clamp(345px, 43vh, 495px);
+  top: clamp(395px, 53vh, 595px);
   z-index:20;
   display:flex;
   align-items:baseline;
