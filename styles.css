@@ -215,6 +215,11 @@ html.reduce-motion .water-bg .ripple{
   background: #ffffff;
   z-index: 1;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s ease 2.6s;
+}
+body.loaded .backdrop{
+  opacity: 1;
 }
 
 /* estrellas decorativas */
@@ -366,7 +371,7 @@ nav.menu a:nth-child(4){
 .wordmark{
   position:absolute;
   left:0; right:0; bottom: min(-1.4vh, -8px);
-  top: clamp(345px, 43vh, 495px);
+  top: clamp(330px, 42vh, 480px);
   z-index:20;
   display:flex;
   align-items:baseline;
@@ -415,6 +420,7 @@ body.loaded .wordmark .rest.brand{
 /* ---------- toggle animaciones ---------- */
 html.reduce-motion .banner::before,
 html.reduce-motion .hero::before,
+html.reduce-motion .backdrop,
 html.reduce-motion .portrait,
 html.reduce-motion body.loaded .portrait.floaty,
 html.reduce-motion nav.menu a,
@@ -424,6 +430,7 @@ html.reduce-motion body.loaded .wordmark .rest.brand{
   animation: none !important;
   transition: none !important;
 }
+html.reduce-motion .backdrop{ opacity:1; }
 html.reduce-motion .portrait{ opacity:1; transform:none; }
 html.reduce-motion nav.menu a{ opacity:1; translate: 0 0; rotate: var(--rot, 0deg); }
 html.reduce-motion .wordmark span{ opacity:1; transform:none; }
